@@ -26,7 +26,7 @@ export async function sendOutreach(contacts){
   //safety checkpoint show summary before firing
   console.log('\n ---OUTREACH SUMMARY ---');
   contacts.forEach((c, i) => {
-    console.log(`${i + 1}. ${c.name} (${c.title ?? 'N/A'}) @ ${c.company ?? 'N/A'} → ${c.email}`);
+    console.log(`${i + 1}. ${c.name} (${c.title ?? 'N/A'}) @ ${c.company ?? 'N/A'} -> ${c.email}`);
   });
   console.log('------------\n');
 
@@ -69,15 +69,15 @@ export async function sendOutreach(contacts){
       }
     );
     console.log(`[Brevo]: Outreach sent. Message ID: ${res.data.messageIds?.[0] ?? 'Unknown'}`);
-  }catch (err){
+  }catch(err){
     console.error('[Brevo]: Error sending emails:', err.response?.data ?? err.message);
   }
 }
 
-// readline-based yes/no prompt
-async function confirm(question) {
+//readline-based yes no prompt
+async function confirm(question){
   const {createInterface} = await import('readline');
-  const rl = createInterface({ input: process.stdin, output: process.stdout });
+  const rl = createInterface({input: process.stdin, output: process.stdout});
   return new Promise(resolve =>{
     rl.question(question, answer =>{
       rl.close();

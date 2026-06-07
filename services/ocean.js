@@ -42,7 +42,7 @@ export async function getLookalikes(seeDomain) {
   }catch (err) {
     if (err.response?.status === 429) {         //429 is rate limit error
       console.error('[Ocean]: Rate limited.');
-    }else {
+    }else{
       console.error('[Ocean]: Error: ', err.response?.data ?? err.message);
     }
     return [];

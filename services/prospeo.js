@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { config } from '../config.js';
+import {config} from '../config.js';
 
 const BASE_URL = 'https://api.prospeo.io';
 const TARGET_SENIORITIES = ['Founder/Owner', 'C-Suite', 'Vice President'];
@@ -30,16 +30,14 @@ async function searchPeople(domains){
       },
     }
   );
-
   return res.data.results ?? [];
 }
 
 async function enrichPeople(people) {
   const results = [];
-
   for (const person of people) {
     await sleep(1100);                             //prospeo has hidden rate limits that are different from the api `'x-second-rate-limit': '1',` so only 1 request per second is allowed
-    try {
+    try{
       const res = await axios.post(
         `${BASE_URL}/bulk-enrich-person`,
         {
@@ -50,7 +48,7 @@ async function enrichPeople(people) {
           }],
         },
         {
-          headers: {
+          headers:{
             'X-KEY': config.prospeo.apiKey,
             'Content-Type': 'application/json',
           },
@@ -58,18 +56,18 @@ async function enrichPeople(people) {
       );
 
       const matched = res.data.matched ?? [];
-      if (matched.length > 0) {
+      if(matched.length > 0){
         results.push(matched[0]);
         console.log(`[Prospeo] Enriched: ${matched[0].person?.full_name}`);
       }
 
-    } catch (err) {
-      if (err.response?.status === 429) {
+    }catch(err){
+      if(err.response?.status === 429){
         console.warn('[Prospeo] Rate limited, skipping person.');
-      } else if (err.response?.data?.error_code === 'INSUFFICIENT_CREDITS') {
+      }else if(err.response?.data?.error_code === 'INSUFFICIENT_CREDITS') {
         console.error('[Prospeo] Out of credits, stopping enrich.');
         break;
-      } else {
+      }else{
         console.error('[Prospeo] Enrich error:', err.response?.data ?? err.message);
       }
     }
@@ -102,16 +100,17 @@ export async function getDecisionMakers(domains){
   try{ 
     enriched = await enrichPeople(searchResults);
   }catch(err){
-    console.log('STATUS:', err.response?.status);
-    console.log('HEADERS:', err.response?.headers);
-    console.log('DATA:', err.response?.data);
-    console.log('MESSAGE:', err.message);
+    //debugging data
+    //console.log('STATUS:', err.response?.status);
+    //console.log('HEADERS:', err.response?.headers);
+    //console.log('DATA:', err.response?.data);
+    //console.log('MESSAGE:', err.message);
     if(err.response?.status === 400 && err.response?.data?.error_code === 'INSUFFICIENT_CREDITS') {
-      console.error('[Prospeo] Out of credits.');
+      console.error('[Prospeo]: Out of credits.');
     }else if(err.response?.status === 429){
-      console.error('[Prospeo] Rate limited on enrich.', err.response?.data ?? err.message);  
+      console.error('[Prospeo]: Rate limited on enrich.', err.response?.data ?? err.message);  
     }else{  
-      console.error('[Prospeo] Enrich error:', err.response?.data ?? err.message);
+      console.error('[Prospeo]: Enrich error:', err.response?.data ?? err.message);
     }
     return []; 
   }
@@ -130,6 +129,6 @@ export async function getDecisionMakers(domains){
   return contacts;
 }
 
-function sleep(ms) {
+function sleep(ms){
   return new Promise(resolve => setTimeout(resolve, ms));
 }

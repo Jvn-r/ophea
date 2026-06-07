@@ -2,7 +2,7 @@ import {getLookalikes} from './services/ocean.js';
 import {getDecisionMakers} from './services/prospeo.js';
 import {sendOutreach} from './services/brevo.js';
 
-async function run() {
+async function run(){
   const seedDomain = process.argv[2];
 
   if(!seedDomain){
@@ -25,7 +25,7 @@ async function run() {
     process.exit(1);
   }
   const seen = new Set();
-  const uniqueContacts = contacts.filter(c => {
+  const uniqueContacts = contacts.filter(c =>{
     if (seen.has(c.email)) return false;
     seen.add(c.email);
     return true;
