@@ -17,12 +17,21 @@ async function run() {
     console.error('Pipeline stopped: no lookalike domains found.');
     process.exit(1);
   }
-  const contacts = await getDecisionMakers(domains);
+  const uniqueDomains = [...new Set(domains)];
+
+  const contacts = await getDecisionMakers(uniqueDomains);
   if(contacts.length === 0){
     console.error('Pipeline stopped: no contacts with emails found.');
     process.exit(1);
   }
-  await sendOutreach(contacts);
+  const seen = new Set();
+  const uniqueContacts = contacts.filter(c => {
+    if (seen.has(c.email)) return false;
+    seen.add(c.email);
+    return true;
+  });
+
+  await sendOutreach(uniqueContacts);
   
   console.log('\nPipeline completeed\n');
 }
