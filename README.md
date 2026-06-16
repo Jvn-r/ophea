@@ -1,15 +1,15 @@
 # Ophea: An Automated Cold Outreach Pipeline
 
-A fully automated cold-outreach CLI tool built as a take-home assignment for Vocallabs/SubSpace. One domain in, personalized outreach emails out — zero manual steps in between.
+A fully automated cold-outreach CLI tool built as a take-home assignment for an internship. One domain in, personalized outreach emails out, zero manual steps in between.
 
 ---
 ## What it does
 
-You give it a seed domain. It finds companies similar to that one, identifies C-suite and VP-level decision makers at those companies, resolves their verified work emails, and sends each of them a personalized cold email — all on its own.
+You give it a seed domain. It finds companies similar to that one, identifies C-suite and VP-level decision makers at those companies, resolves their verified work emails, and sends each of them a personalized cold email, all on its own.
 
 `node index.js intercom.com`
 
-That's the entire interface.
+That's the entire user input.
 
 ---
 ## Pipeline
@@ -29,8 +29,6 @@ Prospeo        ->  bulk enrich for verified emails   ->  contacts with emails
     v
 Brevo          ->  send personalized outreach        ->  emails sent
 ```
-
-Four stages, three APIs, one command.
 
 ---
 ## Project structure
@@ -74,7 +72,7 @@ node index.js <seed-domain>
 #example
 node index.js intercom.com
 ```
-Before emails fire, the pipeline prints a full summary of every contact it found and asks for confirmation. Type `yes` to send, anything else to abort.
+Before emails fire, the pipeline prints a full summary of every contact it found and asks for confirmation. Type `yes` to send, anything or nothing else to abort.
 
 ---
 ## API overview
